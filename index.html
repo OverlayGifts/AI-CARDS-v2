@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JEWELS-AI | Portal Experience</title>
+
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+  <style>
+    body { margin: 0; overflow: hidden; background: #000; }
+    
+    /* Branding Overlay */
+    #logo {
+      position: absolute; top: 16px; left: 16px; width: 100px; z-index: 100;
+    }
+
+    /* Helper Message */
+    #instruction {
+      position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+      color: white; font-family: sans-serif; background: rgba(0,0,0,0.6);
+      padding: 10px 20px; border-radius: 20px; pointer-events: none;
+      text-align: center;
+      font-size: 14px;
+    }
+  </style>
+
+  <script>
+    // --- COMPONENT: HIDER MATERIAL (The Magic Cloak) ---
+    // This makes the ring invisible but hides (occludes) everything behind it.
+    AFRAME.registerComponent('hider-material', {
+      init: function () {
+        const material = this.el.getObject3D('mesh').material;
+        material.colorWrite = false; // Do not draw color
+        material.depthWrite = true;  // Write to depth buffer
+      }
+    });
+  </script>
+</head>
+<body>
+
+  <img src="logo.png" id="logo" alt="JEWELS-AI">
+  
+  <div id="instruction">Move phone to look inside the City!</div>
+
+  <a-scene 
+    mindar-image="imageTargetSrc: ./targets.mind" 
+    color-space="sRGB" 
+    renderer="colorManagement: true; physicallyCorrectLights: true" 
+    vr-mode-ui="enabled: false" 
+    device-orientation-permission-ui="enabled: false">
+
+    <a-assets>
+      <img id="skyTexture" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/city.jpg" crossorigin="anonymous">
+      
+      <img id="iconWeb" src="icon-web.png" />
+      <img id="iconWhatsapp" src="icon-whatsapp.png" />
+      <img id="iconPhone" src="icon-phone.png" />
+    </a-assets>
+
+    <a-camera position="0 0 0" look-controls="enabled: false">
+      <a-entity cursor="fuse: false; rayOrigin: mouse;" raycaster="far: 10000; objects: .clickable"></a-entity>
+    </a-camera>
+
+    <a-entity id="target1" mindar-image-target="targetIndex: 0">
+
+      <a-entity id="portal-container" position="0 0 0">
+
+        <a-ring 
+          radius-inner="0.45" 
+          radius-outer="10" 
+          position="0 0 0.01" 
+          hider-material>
+        </a-ring>
+
+        <a-torus 
+          radius="0.45" 
+          radius-tubular="0.02" 
+          color="#5E0F8B" 
+          rotation="90 0 0"
+          material="emissive: #5E0F8B; emissiveIntensity: 2">
+        </a-torus>
+
+        <a-cylinder 
+          src="#skyTexture" 
+          radius="0.44" 
+          height="3" 
+          side="back" 
+          open-ended="true" 
+          position="0 0 -1.5" 
+          rotation="0 0 0">
+        </a-cylinder>
+
+        <a-dodecahedron 
+          position="0 0 -1" 
+          radius="0.15" 
+          color="#FFD700" 
+          metalness="1" 
+          roughness="0"
+          animation="property: rotation; to: 0 360 360; dur: 4000; loop: true; easing: linear">
+        </a-dodecahedron>
+
+      </a-entity>
+
+      <a-entity position="0 0.6 0.1"> 
+        <a-image 
+            src="#iconWeb" class="clickable" position="-0.35 0 0" scale="0.2 0.2 0.2" id="btn-web"
+            animation__hover="property: scale; to: 0.25 0.25 0.25; dur: 200; startEvents: mouseenter"
+            animation__leave="property: scale; to: 0.2 0.2 0.2; dur: 200; startEvents: mouseleave">
+        </a-image>
+        <a-image 
+            src="#iconWhatsapp" class="clickable" position="0 0 0" scale="0.2 0.2 0.2" id="btn-whatsapp"
+            animation__hover="property: scale; to: 0.25 0.25 0.25; dur: 200; startEvents: mouseenter"
+            animation__leave="property: scale; to: 0.2 0.2 0.2; dur: 200; startEvents: mouseleave">
+        </a-image>
+        <a-image 
+            src="#iconPhone" class="clickable" position="0.35 0 0" scale="0.2 0.2 0.2" id="btn-phone"
+            animation__hover="property: scale; to: 0.25 0.25 0.25; dur: 200; startEvents: mouseenter"
+            animation__leave="property: scale; to: 0.2 0.2 0.2; dur: 200; startEvents: mouseleave">
+        </a-image>
+      </a-entity>
+
+    </a-entity>
+  </a-scene>
+
+  <script>
+    // --- Social Button Logic ---
+    const SOCIAL_LINKS = {
+      web: 'https://www.google.com',           // Your Jewels-AI website
+      whatsapp: 'https://wa.me/917019743880',  // Your WhatsApp
+      phone: 'tel:+917019743880'               // Your Phone
+    };
+
+    function setupButton(id, url) {
+      const btn = document.querySelector(id);
+      if(btn) {
+        btn.addEventListener('click', () => { window.location.href = url; });
+      }
+    }
+
+    setupButton('#btn-web', SOCIAL_LINKS.web);
+    setupButton('#btn-whatsapp', SOCIAL_LINKS.whatsapp);
+    setupButton('#btn-phone', SOCIAL_LINKS.phone);
+
+    // --- Start MindAR System Safely ---
+    const sceneEl = document.querySelector('a-scene');
+    sceneEl.addEventListener('renderstart', () => {
+      const sys = sceneEl.systems['mindar-image-system'];
+      if (sys && sys.start) sys.start();
+    });
+  </script>
+</body>
+</html>
