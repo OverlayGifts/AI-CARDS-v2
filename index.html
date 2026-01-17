@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>JEWELS-AI | Cinema Vault</title>
+  <title>JEWELS-AI | Info Tunnel</title>
 
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -13,7 +13,7 @@
     
     #logo { position: absolute; top: 16px; left: 16px; width: 100px; z-index: 100; }
 
-    /* Play Button Styles */
+    /* Play Button */
     .button-panel {
       position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
       z-index: 100; display: none;
@@ -24,11 +24,10 @@
       background-color: #5E0F8B; color: #fff;
       cursor: pointer; min-width: 160px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-      transition: transform 0.1s;
     }
     .plan-button:active { transform: scale(0.95); }
     
-    /* Helper Toast */
+    /* Toast */
     #toast {
       position: absolute; top: 20px; right: 20px;
       background: rgba(255,255,255,0.2); backdrop-filter: blur(5px);
@@ -38,7 +37,6 @@
   </style>
 
   <script>
-    // Masking Component (Invisibility Cloak)
     AFRAME.registerComponent('hider-material', {
       init: function () {
         const material = this.el.getObject3D('mesh').material;
@@ -67,9 +65,6 @@
 
     <a-assets>
       <video id="plan1Video" src="plan1.mp4" playsinline preload="auto" loop crossorigin="anonymous"></video>
-      
-      <img id="wallTexture" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/cubes.jpg" crossorigin="anonymous">
-      
       <img id="iconWeb" src="icon-web.png" />
       <img id="iconWhatsapp" src="icon-whatsapp.png" />
       <img id="iconPhone" src="icon-phone.png" />
@@ -88,40 +83,50 @@
         <a-plane position="-1 0 0.01" width="1" height="0.6" hider-material></a-plane>
         <a-plane position="1 0 0.01" width="1" height="0.6" hider-material></a-plane>
 
-        <a-box color="#111" position="0 0.29 0.02" width="1.02" height="0.02" depth="0.02"></a-box>
-        <a-box color="#111" position="0 -0.29 0.02" width="1.02" height="0.02" depth="0.02"></a-box>
-        <a-box color="#111" position="-0.51 0 0.02" width="0.02" height="0.6" depth="0.02"></a-box>
-        <a-box color="#111" position="0.51 0 0.02" width="0.02" height="0.6" depth="0.02"></a-box>
+        <a-box color="black" position="0 0.29 0.02" width="1.02" height="0.02" depth="0.02"></a-box>
+        <a-box color="black" position="0 -0.29 0.02" width="1.02" height="0.02" depth="0.02"></a-box>
+        <a-box color="black" position="-0.51 0 0.02" width="0.02" height="0.6" depth="0.02"></a-box>
+        <a-box color="black" position="0.51 0 0.02" width="0.02" height="0.6" depth="0.02"></a-box>
 
-        <a-box 
-          src="#wallTexture" 
-          width="1" height="0.57" depth="0.3" 
-          position="0 0 -0.15" 
-          color="#444" 
-          material="shader: flat; side: back;">
-        </a-box>
+        <a-plane position="-0.5 0 -0.15" rotation="0 90 0" width="0.3" height="0.57" color="white">
+          <a-text 
+            value="ADDRESS:\nJewels-AI Hub\nTech Park\nThrissur, Kerala" 
+            color="black" align="center" width="1.2" position="0 0 0.01">
+          </a-text>
+        </a-plane>
+
+        <a-plane position="0.5 0 -0.15" rotation="0 -90 0" width="0.3" height="0.57" color="white">
+          <a-text 
+            value="ABOUT US:\nWe build the\nFuture of\nJewelry Retail" 
+            color="black" align="center" width="1.2" position="0 0 0.01">
+          </a-text>
+        </a-plane>
+
+        <a-plane position="0 0.285 -0.15" rotation="90 0 0" width="1" height="0.3" color="white">
+           <a-text 
+            value="SERVICE: AR Virtual Try-On" 
+            color="#5E0F8B" align="center" width="1.5" position="0 0 0.01">
+          </a-text>
+        </a-plane>
+
+        <a-plane position="0 -0.285 -0.15" rotation="-90 0 0" width="1" height="0.3" color="white">
+           <a-text 
+            value="SERVICE: AI Design Generator" 
+            color="#5E0F8B" align="center" width="1.5" position="0 0 0.01">
+          </a-text>
+        </a-plane>
 
         <a-plane 
-          id="videoScreen"
-          src="#plan1Video"
-          width="1" height="0.57" 
-          position="0 0 -0.29" 
-          material="shader: flat"
-          class="clickable">
+          id="videoScreen" src="#plan1Video" width="1" height="0.57" 
+          position="0 0 -0.29" material="shader: flat" class="clickable">
         </a-plane>
 
       </a-entity>
 
       <a-entity position="0 0.5 0.1"> 
-        <a-image src="#iconWeb" class="clickable" position="-0.35 0 0" scale="0.2 0.2 0.2" id="btn-web"
-          animation__hover="property: scale; to: 0.25 0.25 0.25; dur: 200; startEvents: mouseenter"
-          animation__leave="property: scale; to: 0.2 0.2 0.2; dur: 200; startEvents: mouseleave"></a-image>
-        <a-image src="#iconWhatsapp" class="clickable" position="0 0 0" scale="0.2 0.2 0.2" id="btn-whatsapp"
-          animation__hover="property: scale; to: 0.25 0.25 0.25; dur: 200; startEvents: mouseenter"
-          animation__leave="property: scale; to: 0.2 0.2 0.2; dur: 200; startEvents: mouseleave"></a-image>
-        <a-image src="#iconPhone" class="clickable" position="0.35 0 0" scale="0.2 0.2 0.2" id="btn-phone"
-          animation__hover="property: scale; to: 0.25 0.25 0.25; dur: 200; startEvents: mouseenter"
-          animation__leave="property: scale; to: 0.2 0.2 0.2; dur: 200; startEvents: mouseleave"></a-image>
+        <a-image src="#iconWeb" class="clickable" position="-0.35 0 0" scale="0.2 0.2 0.2" id="btn-web"></a-image>
+        <a-image src="#iconWhatsapp" class="clickable" position="0 0 0" scale="0.2 0.2 0.2" id="btn-whatsapp"></a-image>
+        <a-image src="#iconPhone" class="clickable" position="0.35 0 0" scale="0.2 0.2 0.2" id="btn-phone"></a-image>
       </a-entity>
 
     </a-entity>
@@ -135,41 +140,21 @@
     const videoScreen = document.querySelector('#videoScreen');
     let isPlaying = false;
 
-    // --- Video Control Logic ---
+    // --- Interactions ---
     toggleButton.addEventListener('click', () => {
-      if (!isPlaying) {
-        videoEl.play();
-        isPlaying = true;
-        toggleButton.textContent = "⏸ Pause Video";
-      } else {
-        videoEl.pause();
-        isPlaying = false;
-        toggleButton.textContent = "▶ Play Video";
-      }
+      if (!isPlaying) { videoEl.play(); isPlaying = true; toggleButton.textContent = "⏸ Pause Video"; } 
+      else { videoEl.pause(); isPlaying = false; toggleButton.textContent = "▶ Play Video"; }
+    });
+    videoScreen.addEventListener('click', () => { toggleButton.click(); });
+
+    target.addEventListener('targetFound', () => { buttonsContainer.style.display = 'block'; });
+    target.addEventListener('targetLost', () => { 
+      buttonsContainer.style.display = 'none'; 
+      videoEl.pause(); isPlaying = false; toggleButton.textContent = "▶ Play Video"; 
     });
 
-    // Make the video screen clickable
-    videoScreen.addEventListener('click', () => {
-      toggleButton.click();
-    });
-
-    // Show/Hide Buttons
-    target.addEventListener('targetFound', () => {
-      buttonsContainer.style.display = 'block';
-    });
-    target.addEventListener('targetLost', () => {
-      buttonsContainer.style.display = 'none';
-      videoEl.pause();
-      isPlaying = false;
-      toggleButton.textContent = "▶ Play Video";
-    });
-
-    // --- Social Links ---
-    const SOCIAL_LINKS = {
-      web: 'https://www.google.com',
-      whatsapp: 'https://wa.me/919999999999',
-      phone: 'tel:+919999999999'
-    };
+    // --- Links ---
+    const SOCIAL_LINKS = { web: 'https://www.google.com', whatsapp: 'https://wa.me/919999999999', phone: 'tel:+919999999999' };
     function setupButton(id, url) {
       const btn = document.querySelector(id);
       if(btn) btn.addEventListener('click', () => { window.location.href = url; });
@@ -178,7 +163,7 @@
     setupButton('#btn-whatsapp', SOCIAL_LINKS.whatsapp);
     setupButton('#btn-phone', SOCIAL_LINKS.phone);
 
-    // Start AR
+    // --- Start ---
     const sceneEl = document.querySelector('a-scene');
     sceneEl.addEventListener('renderstart', () => {
       const sys = sceneEl.systems['mindar-image-system'];
